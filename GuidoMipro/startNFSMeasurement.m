@@ -7,9 +7,6 @@ d=size(g_code);
 % send g_code(3)
 % stopaj vrijeme
 tic;
-% napravi NFS
-NFS = serial('COM4', 'BaudRate', 115200);
-fopen(NFS);
 % inicijaliziraj vrijednosti
 i=1;
 xpos=0;
@@ -57,45 +54,57 @@ for m = 4:2:(d(1)-1)
         % pošalji 3 naredbe - smjer, gornjih i donjih 8 bitova
         first = uint8(3);
         fwrite(NFS,first);
-        second = uint8(bitsra(uint16(round(str2num(xstep)/0.015)),8));
-        third = uint8(bitand(round(str2num(xstep)/0.015),uint16(255)));
+        %pause(1);
+        second = uint8(bitsra(uint16(round(str2num(xstep{1})/0.015)),8));
+        third = uint8(bitand(uint16(round(str2num(xstep{1})/0.015)),uint16(255)));
+        %pause(1);
         fwrite(NFS,second);
+        %pause(1);
         fwrite(NFS,third);
         
-        xpos=xpos+str2double(xstep);
+        xpos=xpos+str2double(xstep{1});
     end
     k = strfind(g_code{m}, x_step_minus{1});
     if k==c
         first = uint8(2);
         fwrite(NFS,first);
-        second = uint8(bitsra(uint16(round(-str2num(xstep)/0.015)),8));
-        third = uint8(bitand(round(-str2num(xstep)/0.015),uint16(255)));
+        %pause(1);
+        second = uint8(bitsra(uint16(round(str2num(xstep{1})/0.015)),8));
+        third = uint8(bitand(uint16(round(str2num(xstep{1})/0.015)),uint16(255)));
+        %pause(1);
         fwrite(NFS,second);
+        %pause(1);
         fwrite(NFS,third);
         
-        xpos=xpos-str2double(xstep);
+        xpos=xpos-str2double(xstep{1});
     end
     k = strfind(g_code{m}, y_step_plus{1});
     if k==v
         first = uint8(4);
+        %pause(1);
         fwrite(NFS,first);
-        second = uint8(bitsra(uint16(round(str2num(ystep)/0.015)),8));
-        third = uint8(bitand(round(str2num(ystep)/0.015),uint16(255)));
+        second = uint8(bitsra(uint16(round(str2num(ystep{1})/0.015)),8));
+        third = uint8(bitand(uint16(round(str2num(ystep{1})/0.015)),uint16(255)));
+        %pause(1);
         fwrite(NFS,second);
+        %pause(1);
         fwrite(NFS,third);
         
-        ypos=ypos+str2double(ystep);
+        ypos=ypos+str2double(ystep{1});
     end
     k = strfind(g_code{m}, y_step_minus{1});
     if k==v
         first = uint8(5);
         fwrite(NFS,first);
-        second = uint8(bitsra(uint16(round(-str2num(ystep)/0.015)),8));
-        third = uint8(bitand(round(-str2num(ystep)/0.015),uint16(255)));
+        %pause(1);
+        second = uint8(bitsra(uint16(round(str2num(ystep{1})/0.015)),8));
+        third = uint8(bitand(uint16(round(str2num(ystep{1})/0.015)),uint16(255)));
+        %pause(1);
         fwrite(NFS,second);
+        %pause(1);
         fwrite(NFS,third);
         
-        ypos=ypos-str2double(ystep);
+        ypos=ypos-str2double(ystep{1});
     end
     
 %     if abs(xpos)>xmax
@@ -110,7 +119,7 @@ for m = 4:2:(d(1)-1)
     set(handles.current_y,'String',yp);
     
     % TESTIRANJE ----
-    pause(1);
+    pause(0.5);
 %     fprintf(FSP, 'FORMAT ASCII');
 %     fprintf(FSP, 'TRAC1? TRACE1');
 %     rez=fscanf(FSP);
@@ -123,6 +132,5 @@ for m = 4:2:(d(1)-1)
 %         results(i,index)=b(index);
 %     end
 end
-fclose(NFS);
 end
 

@@ -22,7 +22,7 @@ function varargout = Guido(varargin)
 
 % Edit the above text to modify the response to help vers1
 
-% Last Modified by GUIDE v2.5 08-Jun-2015 15:18:53
+% Last Modified by GUIDE v2.5 10-Jun-2015 13:13:54
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1251,7 +1251,7 @@ set(handles.ref_point_coor, 'String', string);
 first = uint8(3);
 fwrite(NFS,first);
 second = uint8(0);
-third = uint8(200);
+third = uint8(67);
 fwrite(NFS,second);
 fwrite(NFS,third);
 
@@ -1271,7 +1271,7 @@ set(handles.ref_point_coor, 'String', string);
 first = uint8(2);
 fwrite(NFS,first);
 second = uint8(0);
-third = uint8(200);
+third = uint8(67);
 fwrite(NFS,second);
 fwrite(NFS,third);
 
@@ -1292,7 +1292,7 @@ set(handles.ref_point_coor, 'String', string);
 first = uint8(4);
 fwrite(NFS,first);
 second = uint8(0);
-third = uint8(200);
+third = uint8(67);
 fwrite(NFS,second);
 fwrite(NFS,third);
 
@@ -1312,7 +1312,7 @@ set(handles.ref_point_coor, 'String', string);
 first = uint8(5);
 fwrite(NFS,first);
 second = uint8(0);
-third = uint8(200);
+third = uint8(67);
 fwrite(NFS,second);
 fwrite(NFS,third);
 
@@ -2572,7 +2572,7 @@ set(handles.ref_height_coor, 'String', calibrations.z);
 first = uint8(6);
 fwrite(NFS,first);
 second = uint8(0);
-third = uint8(200);
+third = uint8(67);
 fwrite(NFS,second);
 fwrite(NFS,third);
 
@@ -2590,6 +2590,26 @@ set(handles.ref_height_coor, 'String', calibrations.z);
 first = uint8(7);
 fwrite(NFS,first);
 second = uint8(0);
-third = uint8(200);
+third = uint8(67);
 fwrite(NFS,second);
 fwrite(NFS,third);
+
+
+% --- Executes on button press in connect_nfs.
+function connect_nfs_Callback(hObject, eventdata, handles)
+global NFS;
+% hObject    handle to connect_nfs (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% napravi NFS
+NFS = serial('COM5', 'BaudRate', 115200);
+fopen(NFS);
+
+
+% --- Executes on button press in disconnect_nfs.
+function disconnect_nfs_Callback(hObject, eventdata, handles)
+global NFS;
+% hObject    handle to disconnect_nfs (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+fclose(NFS);
